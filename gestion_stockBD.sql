@@ -29,7 +29,7 @@ CREATE TABLE Produits (
     id_produit VARCHAR(15) NOT NULL,
     nom_produit VARCHAR(20) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    prix INT(10) NOT NULL,
+    prix REAL(10) NOT NULL,
     stock INT(5) NOT NULL,
     id_categorie VARCHAR(15),
     id_fournisseur VARCHAR(15),
