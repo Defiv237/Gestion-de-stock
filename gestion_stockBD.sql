@@ -56,7 +56,6 @@ ADD CONSTRAINT FK_Produits_id_categorie FOREIGN KEY (id_categorie) REFERENCES Ca
 ALTER TABLE Produits
 ADD CONSTRAINT FK_Produits_id_fournisseur FOREIGN KEY (id_fournisseur) REFERENCES Fournisseurs (id_fournisseur);
 
-
 #insertion des données
 INSERT INTO
     Categories (id_categorie, nom_categorie)
@@ -131,3 +130,22 @@ VALUES (
         'C3',
         'F3'
     );
+
+#Mise à jour d'un produit d'id = P1
+UPDATE Produits
+SET
+    prix = 1300.00,
+    description = 'Ordinateur portable haute performance avec écran 4K'
+WHERE
+    id_produit = 'P1';
+
+#Mise à jour d'un fournisseur d'id = F1
+UPDATE Fournisseurs
+SET
+    contact = 'nouveauContactA@example.com',
+    adresse = '456 Nouvelle Rue Exemple'
+WHERE
+    id_fournisseur = 'F1';
+
+#Supprimez une commande spécifique
+DELETE FROM Commandes WHERE id_commande = 'C1';
