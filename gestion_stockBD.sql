@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS Produits;
 
 CREATE TABLE Produits (
     id_produit VARCHAR(15) NOT NULL,
-    nom VARCHAR(20) NOT NULL,
+    nom_produit VARCHAR(20) NOT NULL,
     description VARCHAR(255) NOT NULL,
     prix INT(10) NOT NULL,
     stock INT(5) NOT NULL,
@@ -40,7 +40,7 @@ DROP TABLE IF EXISTS Fournisseurs;
 
 CREATE TABLE Fournisseurs (
     id_fournisseur VARCHAR(15) NOT NULL,
-    nom VARCHAR(20) NOT NULL,
+    nom_fournisseur VARCHAR(20) NOT NULL,
     contact VARCHAR(15) NOT NULL,
     adresse VARCHAR(20) NOT NULL,
     telephone VARCHAR(15) NOT NULL,
