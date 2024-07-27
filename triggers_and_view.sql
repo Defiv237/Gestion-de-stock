@@ -18,7 +18,7 @@ after delete on Commandes
 for each row
 begin
     declare currentStock int;
-    select stock into currentStock from Produits where Produit.id_produit = new.id_produit;
-    update Produits set stock = currentStock - new.quantite where Produits.id_produit = new.id_produit;
+    select stock into currentStock from Produits where Produits.id_produit = old.id_produit;
+    update Produits set stock = currentStock - old.quantite where Produits.id_produit = old.id_produit;
 end //
 delimiter ;
