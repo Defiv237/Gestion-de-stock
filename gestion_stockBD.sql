@@ -46,6 +46,7 @@ CREATE TABLE Commandes (
     quantite INT (5) NOT NULL,
     date_commande DATE NOT NULL,
     id_produit int not null,
+    statut_commande bool NOT NULL Default False,
     PRIMARY KEY (id_commande),
     foreign key (id_produit) references Produits(id_produit)
 ) ENGINE = InnoDB;
@@ -84,11 +85,11 @@ VALUES
     ('Livre de Programmation','Livre pour apprendre à programmer', 35.00, 150, 2,2),
     ('T-shirt', 'T-shirt en coton', 20.00, 200, 3, 3);
     
-insert into Commandes (quantite, date_commande, id_produit)
+insert into Commandes (quantite, date_commande, id_produit, statut_commande)
 values 
-	(20, now(), 1),
-	(10, date_add(now(), interval 3 day), 2),
-	(30, date_add(now(), interval 5 day), 3);
+	(20, now(), 1, 1),
+	(10, date_add(now(), interval 3 day), 2, 1),
+	(30, date_add(now(), interval 5 day), 3, 0);
 
 #Mise à jour d'un produit d'id = P1
 /*
