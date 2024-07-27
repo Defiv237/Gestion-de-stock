@@ -22,3 +22,16 @@ begin
     update Produits set stock = currentStock - old.quantite where Produits.id_produit = old.id_produit;
 end //
 delimiter ;
+
+
+
+drop view if exists CommandeDetails;
+create view CommandeDetails as
+select Produits.nom_produit, Fournisseurs.nom_fournisseur, Commandes.quantite, Commandes.date_commande, Commandes.id_commande
+from Produits 
+join Fournisseurs
+	on Produits.id_fournisseur = Fournisseurs.id_fournisseur
+join Commandes
+	on Commandes.id_produit = Produits.id_produit ;
+	
+select*from CommandeDetails 
