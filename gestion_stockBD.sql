@@ -65,24 +65,10 @@ INSERT INTO
         adresse,
         telephone
     )
-VALUES (
-        'Fournisseur A',
-        'contactA@example.com',
-        '123 Rue Exemple',
-        '0123456789'
-    ),
-    (
-        'Fournisseur B',
-        'contactB@example.com',
-        '456 Rue Exemple',
-        '0123456790'
-    ),
-    (
-        'Fournisseur C',
-        'contactC@example.com',
-        '789 Rue Exemple',
-        '0123456791'
-    );
+VALUES 
+    ('Fournisseur A', 'contactA@example.com','123 Rue Exemple', '0123456789' ),
+    ('Fournisseur B', 'contactB@example.com', '456 Rue Exemple','0123456790'),
+    ('Fournisseur C', 'contactC@example.com','789 Rue Exemple','0123456791');
 
 INSERT INTO
     Produits (
@@ -93,30 +79,10 @@ INSERT INTO
         id_categorie,
         id_fournisseur
     )
-VALUES (
-        'Ordinateur Portable',
-        'Ordinateur portable haute performance',
-        1200.00,
-        50,
-        1,
-        1
-    ),
-    (
-        'Livre de Programmation',
-        'Livre pour apprendre à programmer',
-        35.00,
-        150,
-        2,
-        2
-    ),
-    (
-        'T-shirt',
-        'T-shirt en coton',
-        20.00,
-        200,
-        3,
-        3
-    );
+VALUES 
+    ('Ordinateur Portable', 'Ordinateur portable haute performance', 1200.00, 50, 1, 1 ),
+    ('Livre de Programmation','Livre pour apprendre à programmer', 35.00, 150, 2,2),
+    ('T-shirt', 'T-shirt en coton', 20.00, 200, 3, 3);
     
 insert into Commandes (quantite, date_commande, id_produit)
 values 
