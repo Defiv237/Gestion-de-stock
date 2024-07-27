@@ -1,10 +1,10 @@
 #procedure pour ajouter une commande
 
-drop procedure if exists newCommade;
+drop procedure if exists newCommande;
 delimiter //
 create procedure newCommande(in id_prod int, in qté int)
 begin 
-	insert into Commandes value(0, qté, now(), id_prod);
+	insert into Commandes value(0, qté, now(), id_prod, false);
 end //
 delimiter ;
 
