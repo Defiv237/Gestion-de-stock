@@ -173,7 +173,7 @@ join Fournisseurs
 join Commandes
 	on Commandes.id_produit = Produits.id_produit ;
 	
-select*from CommandeDetails 
+select*from CommandeDetails ;
 
 
 #----------------------------------------------------------------------------------------
