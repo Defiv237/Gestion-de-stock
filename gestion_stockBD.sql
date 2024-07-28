@@ -1,10 +1,18 @@
-#creation Base de donnée
+#Ma base de données : 
+#-----------------------------------------------------------------------------------------
+# 1. database creation
+#-----------------------------------------------------------------------------------------
+SELECT "***************CREATION DE LA BASE DE DONNEES*************************";
 drop database if exists Gestion_stock;
 
 CREATE DATABASE Gestion_stock CHARACTER SET 'utf8';
 
 USE Gestion_stock;
 
+#-----------------------------------------------------------------------------------------
+# 2. tables creation
+#-----------------------------------------------------------------------------------------
+SELECT "***************CREATION DES TABLES****************************\n";
 DROP TABLE IF EXISTS Categories;
 
 CREATE TABLE Categories (
@@ -52,7 +60,10 @@ CREATE TABLE Commandes (
 ) ENGINE = InnoDB;
 
 
-#insertion des données
+#-----------------------------------------------------------------------------------------
+# 3. inserting data in tables
+#-----------------------------------------------------------------------------------------
+SELECT "******************INSERTION DES DONNEES DANS LES TABLES*******************\n";
 INSERT INTO
     Categories (nom_categorie)
 VALUES ('Électronique'),
@@ -91,23 +102,112 @@ values
 	(10, date_add(now(), interval 3 day), 2, 1),
 	(30, date_add(now(), interval 5 day), 3, 0);
 
-#Mise à jour d'un produit d'id = P1
-/*
-UPDATE Produits
-SET
-    prix = 1300.00,
-    description = 'Ordinateur portable haute performance avec écran 4K'
-WHERE
-    id_produit = 'P1';
+#-----------------------------------------------------------------------------------------
+# 4. procedure and function
+#-----------------------------------------------------------------------------------------
+SELECT "*****************CREATION PROCEDURE to add an order***********************\n";
 
-#Mise à jour d'un fournisseur d'id = F1
-UPDATE Fournisseurs
-SET
-    contact = 'nouveauContactA@example.com',
-    adresse = '456 Nouvelle Rue Exemple'
-WHERE
-    id_fournisseur = 'F1';
+drop procedure if exists newCommande;
+delimiter //
+create procedure newCommande(in id_prod int, in qté int)
+begin 
+	insert into Commandes value(0, qté, now(), id_prod, false);
+end //
+delimiter ;
 
-#Supprimez une commande spécifique
-DELETE FROM Commandes WHERE id_commande = 'C1';
-*/
+# function pour verifier la disponibilites d_un produit 
+
+drop function if exists isProduct;
+delimiter //
+create function isProduct(id_prod int)
+returns boolean
+deterministic
+begin 
+	declare qte int;
+    select stock into qte from Produits where id_produit = id_prod;
+    if qte > 0 then
+		return true;
+	else 
+		return false;
+	end if;
+end //
+delimiter ;
+
+#-----------------------------------------------------------------------------------------
+# 5. view and trigger 
+#-----------------------------------------------------------------------------------------
+SELECT "*********************VIEW AND TRIGGER*********************************\n";
+drop trigger if exists addStock;
+delimiter //
+create trigger addStock
+after insert on Commandes
+for each row
+begin
+	declare currentStock int;
+    select stock into currentStock from Produits where Produits.id_produit = new.id_produit;
+    update Produits set stock = new.quantite + currentStock where Produits.id_produit = new.id_produit;
+end //
+delimiter ;
+
+
+drop trigger if exists reduceStock;
+delimiter //
+create trigger reduceStock
+after delete on Commandes
+for each row
+begin
+    declare currentStock int;
+    select stock into currentStock from Produits where Produits.id_produit = old.id_produit;
+    update Produits set stock = currentStock - old.quantite where Produits.id_produit = old.id_produit;
+end //
+delimiter ;
+
+
+
+drop view if exists CommandeDetails;
+create view CommandeDetails as
+select Produits.nom_produit, Fournisseurs.nom_fournisseur, Commandes.quantite, Commandes.date_commande, Commandes.id_commande
+from Produits 
+join Fournisseurs
+	on Produits.id_fournisseur = Fournisseurs.id_fournisseur
+join Commandes
+	on Commandes.id_produit = Produits.id_produit ;
+	
+select*from CommandeDetails ;
+
+
+#----------------------------------------------------------------------------------------
+# 6. sql queries
+#----------------------------------------------------------------------------------------
+
+#Requête pour lister les produits par catégorie
+Select Produits.nom_produit, Categories.nom_categorie
+from Produits
+join Categories
+	on Produits.id_categorie = Categories.id_categorie
+where Categories.nom_categorie = 'Électronique' ;
+
+
+#Requête pour trouver les fournisseurs dun certain produit
+Select Produits.nom_produit, Fournisseurs.nom_fournisseur
+from Produits
+join Fournisseurs
+	on Produits.id_fournisseur = Fournisseurs.id_fournisseur
+where Produits.nom_produit = 'Ordinateur Portable' ;
+
+
+#Requête pour lister les commandes en cours pour un produit
+Select Produits.id_produit as id ,Produits.nom_produit, Commandes.statut_commande as Encours
+from Produits
+join Commandes
+	on Commandes.id_produit = Produits.id_produit
+where Produits.nom_produit = 'Ordinateur Portable' ;
+
+
+#Requête pour compter le nombre total de commandes par produit
+Select Produits.id_produit as id ,Produits.nom_produit, COUNT(Commandes.id_commande) as nbre_commande
+from Produits
+join Commandes
+	on Commandes.id_produit = Produits.id_produit
+
+Group by (Commandes.id_commande);
